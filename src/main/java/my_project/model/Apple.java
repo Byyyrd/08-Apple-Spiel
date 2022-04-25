@@ -7,21 +7,20 @@ public class Apple extends GraphicalObject {
 
     //Attribute
     private double speed;
-    private double size;
 
     public Apple(double x, double y){
         this.x = x;
         this.y = y;
         speed = 150;
-        size = 30;
+        radius = 30;
     }
 
     @Override
     public void draw(DrawTool drawTool) {
         drawTool.setCurrentColor(255,0,0,255);
-        drawTool.drawFilledCircle(x,y,size);
+        drawTool.drawFilledCircle(x,y,radius);
         drawTool.setCurrentColor(0,0,0,255);
-        drawTool.drawCircle(x,y,size);
+        drawTool.drawCircle(x,y,radius);
     }
 
     @Override
