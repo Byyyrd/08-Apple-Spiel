@@ -2,16 +2,17 @@ package my_project.model;
 
 import KAGO_framework.model.GraphicalObject;
 import KAGO_framework.view.DrawTool;
+import my_project.Config;
 
-public class Pear extends GraphicalObject {
+public class Pear extends Fruit{
 
     //Attribute
-    private double speed;
+    private boolean moveRight;
+
 
     public Pear(double x, double y){
-        this.x = x;
-        this.y = y;
-        speed = 150;
+        super(x,y);
+        startX = x;
         width = 25;
         height = 35;
     }
@@ -23,12 +24,22 @@ public class Pear extends GraphicalObject {
         drawTool.setCurrentColor(0,0,0,255);
         drawTool.drawRectangle(x,y,width,height);
     }
-
     @Override
     public void update(double dt) {
-        //TODO 03 Eine Birne soll von oben herab fallen. Sobald sie unten den Bildschirmrand berührt wird die Methode jumpBack() aufgerufen (siehe TODO 04).
-    }
+        super.update(dt);
 
-    //TODO 04 Lege eine Methode jumpBack() an, die bei Aufruf das Pear-Objekt oben am oberen Bildschirmrand an einer zufälligen x-Position positioniert.
+        if (x > startX + Config.WIGGLE_RANGE){
+            moveRight = false;
+        }
+        if (x < startX - Config.WIGGLE_RANGE){
+            moveRight = true;
+        }
+        if (moveRight){
+            x += speed * dt * Config.WIGGLE_SPEED_PERCENTAGE;
+        }else   {
+            x -= speed * dt * Config.WIGGLE_SPEED_PERCENTAGE; //callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~//callus was here uwu~
+        }
+
+    }
 }
 

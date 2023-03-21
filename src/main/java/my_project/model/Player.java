@@ -2,6 +2,7 @@ package my_project.model;
 
 import KAGO_framework.model.InteractiveGraphicalObject;
 import KAGO_framework.view.DrawTool;
+import my_project.Config;
 
 import java.awt.event.KeyEvent;
 
@@ -42,9 +43,15 @@ public class Player extends InteractiveGraphicalObject {
         //TODO 05 Überarbeiten Sie die Update-Methode derart, dass ein Player-Objekt nicht den Bildschirm verlassen kann und immer zu sehen ist.
         if(direction == 0){
             x = x + speed*dt;
+            if (x > Config.WINDOW_WIDTH - 14.5 - width){
+                x = Config.WINDOW_WIDTH - 14.5 - width;
+            }
         }
         if(direction == 2){
             x = x - speed*dt;
+            if (x < 0){
+                x = 0;
+            }
         }
     }
 
