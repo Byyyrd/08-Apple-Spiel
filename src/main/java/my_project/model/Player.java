@@ -12,6 +12,9 @@ public class Player extends InteractiveGraphicalObject {
     //Attribute
     private double speed;
     private int points;
+    private double speedBuff;
+    private double timer;
+    private boolean buffed;
 
     //Tastennummern zur Steuerung
     private int keyToGoLeft;
@@ -53,6 +56,10 @@ public class Player extends InteractiveGraphicalObject {
                 x = 0;
             }
         }
+        timer -= dt;
+        if (timer <= 0 && buffed){
+            speedBuffExpired();
+        }
     }
 
     @Override
@@ -73,5 +80,29 @@ public class Player extends InteractiveGraphicalObject {
         if(key == keyToGoRight){
             direction = -1;
         }
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public void receiveSpeedBuff(double buffAmount){
+        if (!buffed){
+            speedBuff = buffAmount;
+            speed += speedBuff;
+            timer = 5;
+            buffed = true;
+        }else {
+            timer = 5;
+        }
+
+    }
+    public void speedBuffExpired(){
+        speed -= speedBuff;
+        buffed = false;
     }
 }

@@ -2,10 +2,7 @@ package my_project.control;
 
 import KAGO_framework.control.ViewController;
 import my_project.Config;
-import my_project.model.Apple;
-import my_project.model.Fruit;
-import my_project.model.Pear;
-import my_project.model.Player;
+import my_project.model.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -22,9 +19,8 @@ public class ProgramController {
     // Referenzen
     private ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
 
-    private Apple apple01;
-    private Pear pear01;
     private Player player01;
+    private PowerApple powerApple;
     private ArrayList<Apple> allApples = new ArrayList<>();
     private ArrayList<Pear> allPears = new ArrayList<>();
 
@@ -63,7 +59,10 @@ public class ProgramController {
 
         for (Apple a : allApples)
             viewController.draw(a);
-
+        double xPos = Math.random() * (Config.WINDOW_WIDTH - 50) + 50;
+        double yPos = Math.random() * (Config.WINDOW_HEIGHT - 50) + 50;
+        powerApple = new PowerApple(xPos,yPos);
+        viewController.draw(powerApple);
         player01 = new Player(50, Config.WINDOW_HEIGHT - 100);
         viewController.draw(player01);
         viewController.register(player01);
@@ -80,6 +79,10 @@ public class ProgramController {
         for (Apple a : allApples) {
             if (a.checkAndHandleCollision(player01)) {
                 a.jumpBack();
+                if (a instanceof PowerApple){
+                    PowerApple apple = (PowerApple) a;
+                    player01.receiveSpeedBuff(apple.getSpeedBuff());
+                }
             }
 
         }
@@ -87,7 +90,6 @@ public class ProgramController {
             if (p.checkAndHandleCollision(player01)) {
                 p.jumpBack();
             }
-
         }
 
 
