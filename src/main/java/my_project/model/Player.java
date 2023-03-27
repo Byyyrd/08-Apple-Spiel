@@ -43,6 +43,14 @@ public class Player extends InteractiveGraphicalObject {
         drawTool.drawFilledRectangle(x,y,width,height);
         drawTool.setCurrentColor(0,0,0,255);
         drawTool.drawRectangle(x,y,width,height);
+
+        drawTool.drawText(10,10," Speed: " + Math.floor(speed));
+
+        drawTool.drawText(10,30,"buff: " + Math.floor(speedBuff));
+        drawTool.drawText(10,40,"timer: " + Math.floor(timer));
+
+        drawTool.drawText(10,60,"debuff: " + Math.floor(debuff));
+        drawTool.drawText(10,70,"detimer: " + Math.floor(debuffTimer));
     }
 
     @Override
@@ -60,8 +68,12 @@ public class Player extends InteractiveGraphicalObject {
                 x = 0;
             }
         }
-        timer -= dt;
-        debuffTimer -= dt;
+        if (timer > 0){
+            timer -= dt;
+        }
+        if (debuffTimer > 0) {
+            debuffTimer -= dt;
+        }
         if (timer <= 0 && buffed){
             speedBuffExpired();
         }if (debuffTimer <= 0 && debuffed){
@@ -110,22 +122,24 @@ public class Player extends InteractiveGraphicalObject {
     }
     public void speedBuffExpired(){
         speed -= speedBuff;
+        speedBuff = 0;
         buffed = false;
     }
 
     public void receiveDebuff(double buffAmount){
         if (!debuffed){
             debuff = buffAmount;
-            speed += speedBuff;
+            speed += debuff;
             debuffTimer = 5;
             debuffed = true;
         }else {
-            timer = 5;
+            debuffTimer = 5;
         }
 
     }
     public void debuffExpired(){
         speed -= debuff;
+        debuff = 0;
         debuffed = false;
     }
 }

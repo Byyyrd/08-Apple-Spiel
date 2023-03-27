@@ -8,7 +8,7 @@ public class PowerApple extends Apple{
     private double speedBuff;
     public PowerApple(double x, double y) {
         super(x, y);
-        speedBuff = Math.random()*150+50;
+        speedBuff = Math.random()*50+50;
     }
 
     public void setSpeedBuff(double speedBuff) {
