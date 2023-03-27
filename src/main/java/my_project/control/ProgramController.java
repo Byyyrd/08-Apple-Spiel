@@ -21,6 +21,7 @@ public class ProgramController {
 
     private Player player01;
     private PowerApple powerApple;
+    private PowerPear powerPear;
     private ArrayList<Apple> allApples = new ArrayList<>();
     private ArrayList<Pear> allPears = new ArrayList<>();
 
@@ -54,15 +55,21 @@ public class ProgramController {
             double yPos = Math.random() * (Config.WINDOW_HEIGHT - 50) + 50;
             allPears.add(new Pear(xPos, yPos));
         }
+
+        double xPos = Math.random() * (Config.WINDOW_WIDTH - 50) + 50;
+        double yPos = Math.random() * (Config.WINDOW_HEIGHT - 50) + 50;
+        allApples.add(new PowerApple(xPos,yPos));
+
+        xPos = Math.random() * (Config.WINDOW_WIDTH - 50) + 50;
+        yPos = Math.random() * (Config.WINDOW_HEIGHT - 50) + 50;
+        allPears.add(new PowerPear(xPos,yPos));
+
         for (Pear p : allPears)
             viewController.draw(p);
 
         for (Apple a : allApples)
             viewController.draw(a);
-        double xPos = Math.random() * (Config.WINDOW_WIDTH - 50) + 50;
-        double yPos = Math.random() * (Config.WINDOW_HEIGHT - 50) + 50;
-        powerApple = new PowerApple(xPos,yPos);
-        viewController.draw(powerApple);
+
         player01 = new Player(50, Config.WINDOW_HEIGHT - 100);
         viewController.draw(player01);
         viewController.register(player01);
@@ -89,6 +96,10 @@ public class ProgramController {
         for (Pear p : allPears) {
             if (p.checkAndHandleCollision(player01)) {
                 p.jumpBack();
+                if (p instanceof PowerPear){
+                    PowerPear pear = (PowerPear) p;
+                    player01.receiveDebuff(pear.getSpeedBuff());
+                }
             }
         }
 

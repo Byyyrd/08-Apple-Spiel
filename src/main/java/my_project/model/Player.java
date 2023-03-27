@@ -16,6 +16,10 @@ public class Player extends InteractiveGraphicalObject {
     private double timer;
     private boolean buffed;
 
+    private double debuff;
+    private double debuffTimer;
+    private boolean debuffed;
+
     //Tastennummern zur Steuerung
     private int keyToGoLeft;
     private int keyToGoRight;
@@ -57,8 +61,11 @@ public class Player extends InteractiveGraphicalObject {
             }
         }
         timer -= dt;
+        debuffTimer -= dt;
         if (timer <= 0 && buffed){
             speedBuffExpired();
+        }if (debuffTimer <= 0 && debuffed){
+            debuffExpired();
         }
     }
 
@@ -104,5 +111,21 @@ public class Player extends InteractiveGraphicalObject {
     public void speedBuffExpired(){
         speed -= speedBuff;
         buffed = false;
+    }
+
+    public void receiveDebuff(double buffAmount){
+        if (!debuffed){
+            debuff = buffAmount;
+            speed += speedBuff;
+            debuffTimer = 5;
+            debuffed = true;
+        }else {
+            timer = 5;
+        }
+
+    }
+    public void debuffExpired(){
+        speed -= debuff;
+        debuffed = false;
     }
 }
