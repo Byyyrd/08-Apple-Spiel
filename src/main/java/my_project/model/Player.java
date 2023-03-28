@@ -4,6 +4,7 @@ import KAGO_framework.model.InteractiveGraphicalObject;
 import KAGO_framework.view.DrawTool;
 import my_project.Config;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class Player extends InteractiveGraphicalObject {
@@ -20,37 +21,40 @@ public class Player extends InteractiveGraphicalObject {
     private double debuffTimer;
     private boolean debuffed;
 
+    private Color color;
+
     //Tastennummern zur Steuerung
     private int keyToGoLeft;
     private int keyToGoRight;
     private int direction;
 
-    public Player(double x, double y){
+    public Player(double x, double y, int left, int right, Color color){
         this.x = x;
         this.y = y;
         speed = 150;
         width = 80;
         height = 40;
+        this.color = color;
 
-        this.keyToGoLeft    = KeyEvent.VK_A;
-        this.keyToGoRight   = KeyEvent.VK_D;
+        this.keyToGoLeft    = left;
+        this.keyToGoRight   = right;
         this.direction      = -1; //-1 keine Bewegung, 0 nach rechts, 2 nach links
     }
 
     @Override
     public void draw(DrawTool drawTool) {
-        drawTool.setCurrentColor(157,152,3,255);
+        drawTool.setCurrentColor(color);
         drawTool.drawFilledRectangle(x,y,width,height);
         drawTool.setCurrentColor(0,0,0,255);
         drawTool.drawRectangle(x,y,width,height);
 
-        drawTool.drawText(10,10," Speed: " + Math.floor(speed));
+       /* drawTool.drawText(10,10," Speed: " + Math.floor(speed));
 
         drawTool.drawText(10,30,"buff: " + Math.floor(speedBuff));
         drawTool.drawText(10,40,"timer: " + Math.floor(timer));
 
         drawTool.drawText(10,60,"debuff: " + Math.floor(debuff));
-        drawTool.drawText(10,70,"detimer: " + Math.floor(debuffTimer));
+        drawTool.drawText(10,70,"detimer: " + Math.floor(debuffTimer));*/
     }
 
     @Override

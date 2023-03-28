@@ -5,6 +5,8 @@ import my_project.Config;
 import my_project.model.*;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.security.Key;
 import java.util.ArrayList;
 
 /**
@@ -20,8 +22,9 @@ public class ProgramController {
     private ViewController viewController;  // diese Referenz soll auf ein Objekt der Klasse viewController zeigen. Über dieses Objekt wird das Fenster gesteuert.
 
     private Player player01;
-    private PowerApple powerApple;
-    private PowerPear powerPear;
+    private Player player02;
+    private Banana banana;
+    private Background background;
     private ArrayList<Apple> allApples = new ArrayList<>();
     private ArrayList<Pear> allPears = new ArrayList<>();
 
@@ -43,6 +46,10 @@ public class ProgramController {
      */
     public void startProgram() {
 
+        background = new Background();
+        viewController.draw(background);
+
+
         for (int i = 0; i < 5; i++) {
             double xPos = Math.random() * (Config.WINDOW_WIDTH - 50) + 50;
             double yPos = Math.random() * (Config.WINDOW_HEIGHT - 50) + 50;
@@ -58,11 +65,11 @@ public class ProgramController {
 
         double xPos = Math.random() * (Config.WINDOW_WIDTH - 50) + 50;
         double yPos = Math.random() * (Config.WINDOW_HEIGHT - 50) + 50;
-        allApples.add(new PowerApple(xPos,yPos));
+        allApples.add(new PowerApple(xPos, yPos));
 
         xPos = Math.random() * (Config.WINDOW_WIDTH - 50) + 50;
         yPos = Math.random() * (Config.WINDOW_HEIGHT - 50) + 50;
-        allPears.add(new PowerPear(xPos,yPos));
+        allPears.add(new PowerPear(xPos, yPos));
 
         for (Pear p : allPears)
             viewController.draw(p);
@@ -70,9 +77,19 @@ public class ProgramController {
         for (Apple a : allApples)
             viewController.draw(a);
 
-        player01 = new Player(50, Config.WINDOW_HEIGHT - 100);
+        xPos = Math.random() * (Config.WINDOW_WIDTH - 50) + 50;
+        yPos = Math.random() * (Config.WINDOW_HEIGHT - 50) + 50;
+        banana = new Banana(xPos, yPos);
+        viewController.draw(banana);
+
+
+        player01 = new Player(50, Config.WINDOW_HEIGHT - 100, KeyEvent.VK_A, KeyEvent.VK_D, Color.black);
         viewController.draw(player01);
         viewController.register(player01);
+
+        player02 = new Player(100, Config.WINDOW_HEIGHT - 100, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, Color.white);
+        viewController.draw(player02);
+        viewController.register(player02);
     }
 
     /**
@@ -86,20 +103,39 @@ public class ProgramController {
         for (Apple a : allApples) {
             if (a.checkAndHandleCollision(player01)) {
                 a.jumpBack();
-                if (a instanceof PowerApple){
+                if (a instanceof PowerApple) {
                     PowerApple apple = (PowerApple) a;
                     player01.receiveSpeedBuff(apple.getSpeedBuff());
+                }
+            }
+            if (a.checkAndHandleCollision(player02)) {
+                a.jumpBack();
+                if (a instanceof PowerApple) {
+                    PowerApple apple = (PowerApple) a;
+                    player02.receiveSpeedBuff(apple.getSpeedBuff());
                 }
             }
 
         }
         for (Pear p : allPears) {
             if (p.checkAndHandleCollision(player01)) {
+                background.caughtPear(p);
                 p.jumpBack();
-                if (p instanceof PowerPear){
+                if (p instanceof PowerPear) {
                     PowerPear pear = (PowerPear) p;
                     player01.receiveDebuff(pear.getSpeedBuff());
                 }
+
+
+            }
+            if (p.checkAndHandleCollision(player02)) {
+                background.caughtPear(p);
+                p.jumpBack();
+                if (p instanceof PowerPear) {
+                    PowerPear pear = (PowerPear) p;
+                    player02.receiveDebuff(pear.getSpeedBuff());
+                }
+
             }
         }
 
