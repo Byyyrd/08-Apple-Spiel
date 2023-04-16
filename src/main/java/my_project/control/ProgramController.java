@@ -25,8 +25,9 @@ public class ProgramController {
     private Player player02;
     private Banana banana;
     private Background background;
-    private ArrayList<Apple> allApples = new ArrayList<>();
-    private ArrayList<Pear> allPears = new ArrayList<>();
+    /*private ArrayList<Apple> allApples = new ArrayList<>();
+    private ArrayList<Pear> allPears = new ArrayList<>();*/
+    private ArrayList<Fruit> allFruits = new ArrayList<>();
 
     /**
      * Konstruktor
@@ -49,39 +50,24 @@ public class ProgramController {
         background = new Background();
         viewController.draw(background);
 
-
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 13; i++) {
             double xPos = Math.random() * (Config.WINDOW_WIDTH - 50) + 50;
             double yPos = Math.random() * (Config.WINDOW_HEIGHT - 50) + 50;
-            allApples.add(new Apple(xPos, yPos));
+            if (i < 5) {
+                allFruits.add(new Apple(xPos, yPos));
+            } else if (i < 10) {
+                allFruits.add(new Pear(xPos, yPos));
+            } else if (i == 10) {
+                allFruits.add(new PowerApple(xPos, yPos));
+            } else if (i == 11) {
+                allFruits.add(new PowerPear(xPos, yPos));
+            } else {
+                allFruits.add(new Banana(xPos, yPos));
+            }
         }
 
-
-        for (int i = 0; i < 5; i++) {
-            double xPos = Math.random() * (Config.WINDOW_WIDTH - 50) + 50;
-            double yPos = Math.random() * (Config.WINDOW_HEIGHT - 50) + 50;
-            allPears.add(new Pear(xPos, yPos));
-        }
-
-        double xPos = Math.random() * (Config.WINDOW_WIDTH - 50) + 50;
-        double yPos = Math.random() * (Config.WINDOW_HEIGHT - 50) + 50;
-        allApples.add(new PowerApple(xPos, yPos));
-
-        xPos = Math.random() * (Config.WINDOW_WIDTH - 50) + 50;
-        yPos = Math.random() * (Config.WINDOW_HEIGHT - 50) + 50;
-        allPears.add(new PowerPear(xPos, yPos));
-
-        for (Pear p : allPears)
-            viewController.draw(p);
-
-        for (Apple a : allApples)
-            viewController.draw(a);
-
-        xPos = Math.random() * (Config.WINDOW_WIDTH - 50) + 50;
-        yPos = Math.random() * (Config.WINDOW_HEIGHT - 50) + 50;
-        banana = new Banana(xPos, yPos);
-        viewController.draw(banana);
-
+        for (Fruit f : allFruits)
+            viewController.draw(f);
 
         player01 = new Player(50, Config.WINDOW_HEIGHT - 100, KeyEvent.VK_A, KeyEvent.VK_D, Color.black);
         viewController.draw(player01);
@@ -90,6 +76,9 @@ public class ProgramController {
         player02 = new Player(100, Config.WINDOW_HEIGHT - 100, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, Color.white);
         viewController.draw(player02);
         viewController.register(player02);
+
+        background.setPlayer01(player01);
+        background.setPlayer02(player02);
     }
 
     /**
@@ -100,55 +89,49 @@ public class ProgramController {
     public void updateProgram(double dt) {
         //TODO 08 Nachdem Sie die TODOs 01-07 erledigt haben: Setzen Sie um, dass im Falle einer Kollision (siehe TODO 06 bzw. 07) zwischen dem Spieler und dem Apfel bzw. dem Spieler und der Birne, die jumpBack()-Methode von dem Apfel bzw. der Birne aufgerufen wird.
         //Weitere TODOs folgen und werden im Unterricht formuliert. Spätestens nach TODO 08 sollte der Aufbau des Projekts durchdacht werden.
-        for (Apple a : allApples) {
-            if (a.checkAndHandleCollision(player01)) {
-                a.jumpBack();
-                if (a instanceof PowerApple) {
-                    PowerApple apple = (PowerApple) a;
-                    player01.receiveSpeedBuff(apple.getSpeedBuff());
-                }
-            }
-            if (a.checkAndHandleCollision(player02)) {
-                a.jumpBack();
-                if (a instanceof PowerApple) {
-                    PowerApple apple = (PowerApple) a;
-                    player02.receiveSpeedBuff(apple.getSpeedBuff());
-                }
-            }
-
-        }
-        for (Pear p : allPears) {
-            if (p.checkAndHandleCollision(player01)) {
-                background.caughtPear(p);
-                p.jumpBack();
-                if (p instanceof PowerPear) {
-                    PowerPear pear = (PowerPear) p;
-                    player01.receiveDebuff(pear.getSpeedBuff());
-                }
-
-
-            }
-            if (p.checkAndHandleCollision(player02)) {
-                background.caughtPear(p);
-                p.jumpBack();
-                if (p instanceof PowerPear) {
-                    PowerPear pear = (PowerPear) p;
-                    player02.receiveDebuff(pear.getSpeedBuff());
-                }
-
-            }
-        }
-
+        Collision(player01);
+        Collision(player02);
 
     }
     //TODO 06 Fügen Sie eine Methode checkAndHandleCollision(Apple a) hinzu. Diese gibt true zurück, falls das Apple-Objekt mit dem Player-Objekt kollidiert. Nutzen Sie hierzu die collidesWith-Methode der Klasse GraphicalObject.
 
-    public boolean checkAndHandleCollision(Apple a) {
+   /* public boolean checkAndHandleCollision(Apple a) {
         return a.collidesWith(player01);
-    }
+    }*/
 
     //TODO 07 Fügen Sie eine Methode checkAndHandleCollision(Pear p) hinzu. Diese gibt true zurück, falls das Pear-Objekt mit dem Player-Objekt kollidiert. Nutzen Sie hierzu die collidesWith-Methode der Klasse GraphicalObject.
-    public boolean checkAndHandleCollision(Pear p) {
+    /*public boolean checkAndHandleCollision(Pear p) {
         return p.collidesWith(player01);
+    }*/
+
+    private void Collision(Player player) {
+        for (Fruit f : allFruits) {
+            if (f.checkAndHandleCollision(player)) {
+                if (f instanceof Apple) {
+                    player.receivePoints(Config.POINTS_BASE * player.getMultiplier());
+                    if (f instanceof PowerApple) {
+                        PowerApple apple = (PowerApple) f;
+                        player.receiveSpeedBuff(apple.getSpeedBuff());
+                        player.receivePoints(Config.POINTS_BASE * player.getMultiplier());
+                    }
+                    player.gainMultiplier();
+                }
+                if (f instanceof Pear) {
+                    player.receivePoints(-Config.POINTS_BASE + player.getMultiplier());
+                    Pear p = (Pear) f;
+                    background.caughtPear(p);
+                    if (f instanceof PowerPear) {
+                        PowerPear powerPear = (PowerPear) f;
+                        player02.receiveDebuff(powerPear.getSpeedBuff());
+                        player.receivePoints(-Config.POINTS_BASE + player.getMultiplier());
+                    }
+                    player.loseMultiplier();
+                }
+                if (f instanceof Banana){
+                    player.getStunned();
+                }
+                f.jumpBack();
+            }
+        }
     }
 }

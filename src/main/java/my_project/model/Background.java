@@ -13,6 +13,8 @@ import java.util.ArrayList;
 public class Background extends GraphicalObject {
 
     private ArrayList<double[]> allCaughtPears = new ArrayList<>();
+    private Player player01;
+    private Player player02;
 
     //Referenzen
     String chosenPhrase;
@@ -45,6 +47,22 @@ public class Background extends GraphicalObject {
                 allCaughtPears.remove(allCaughtPears);
             }
         }
+
+        drawTool.formatText("Arial",1,20);
+
+        drawTool.drawText(10,20,"Points P1: " + player01.getPoints());
+        drawTool.drawText(10,40,"Multiplier P1: " + player01.getMultiplier());
+
+        drawTool.drawText(10,70,"Points P2: " + player02.getPoints());
+        drawTool.drawText(10,90,"Multiplier P2: " + player02.getMultiplier());
+
+        drawTool.formatText("Arial",1,40);
+        if (player01.isStunned()){
+            drawTool.drawText(300,300,"Player 1 Stunned");
+        }
+        if (player02.isStunned()){
+            drawTool.drawText(300,500,"Player 2 Stunned");
+        }
     }
 
     @Override
@@ -58,4 +76,11 @@ public class Background extends GraphicalObject {
         allCaughtPears.add(new double[]{p.getX(),p.getY(),1});
     }
 
+    public void setPlayer01(Player player01) {
+        this.player01 = player01;
+    }
+
+    public void setPlayer02(Player player02) {
+        this.player02 = player02;
+    }
 }

@@ -21,4 +21,7 @@ public class Config {
     //Haha Funny
     public final static double WIGGLE_RANGE = 30;
     public final static double WIGGLE_SPEED_PERCENTAGE = 0.5;
+
+    //Points
+    public final static double POINTS_BASE = 5;
 }

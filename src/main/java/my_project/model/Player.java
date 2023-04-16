@@ -5,17 +5,20 @@ import KAGO_framework.view.DrawTool;
 import my_project.Config;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 public class Player extends InteractiveGraphicalObject {
 
 
     //Attribute
     private double speed;
-    private int points;
+    private double points;
     private double speedBuff;
     private double timer;
     private boolean buffed;
+    private int multiplier;
+    private boolean stunned;
+    private double stunTimer;
+
 
     private double debuff;
     private double debuffTimer;
@@ -60,13 +63,13 @@ public class Player extends InteractiveGraphicalObject {
     @Override
     public void update(double dt) {
         //TODO 05 Überarbeiten Sie die Update-Methode derart, dass ein Player-Objekt nicht den Bildschirm verlassen kann und immer zu sehen ist.
-        if(direction == 0){
+        if(direction == 0 && !stunned){
             x = x + speed*dt;
             if (x > Config.WINDOW_WIDTH - 14.5 - width){
                 x = Config.WINDOW_WIDTH - 14.5 - width;
             }
         }
-        if(direction == 2){
+        if(direction == 2 && !stunned){
             x = x - speed*dt;
             if (x < 0){
                 x = 0;
@@ -82,6 +85,13 @@ public class Player extends InteractiveGraphicalObject {
             speedBuffExpired();
         }if (debuffTimer <= 0 && debuffed){
             debuffExpired();
+        }
+
+        if (stunTimer > 0){
+            stunTimer -= dt;
+        }
+        if (stunTimer <= 0 && stunned){
+            stunned = false;
         }
     }
 
@@ -145,5 +155,29 @@ public class Player extends InteractiveGraphicalObject {
         speed -= debuff;
         debuff = 0;
         debuffed = false;
+    }
+
+    public void receivePoints(double amount){
+        points += amount;
+    }
+    public double getPoints(){
+        return points;
+    }
+    public int getMultiplier(){
+        return multiplier;
+    }
+    public void loseMultiplier(){
+        multiplier = 0;
+    }
+    public void gainMultiplier(){
+        multiplier++;
+    }
+    public void getStunned(){
+        stunTimer = 2;
+        stunned = true;
+    }
+
+    public boolean isStunned() {
+        return stunned;
     }
 }
